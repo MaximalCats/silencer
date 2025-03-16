@@ -2,6 +2,8 @@ package dev.hex.silencer;
 
 import java.util.List;
 
+import javax.xml.stream.events.Namespace;
+
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandExecutor;
@@ -27,6 +29,8 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class Silencer extends JavaPlugin implements Listener {
 
+    private NamespacedKey key = new NamespacedKey(this, "isMuted");
+
     private LiteralCommandNode<CommandSourceStack> muteCommand() {
         return Commands.literal("mute")
                 .requires(sender -> sender.getSender().hasPermission("silencer.mute"))
@@ -38,7 +42,6 @@ public class Silencer extends JavaPlugin implements Listener {
                             final CommandSender commandExecutor = ctx.getSource().getSender();
 
                             for (final Player target : targets) {
-                                NamespacedKey key = new NamespacedKey(this, "isMuted");
                                 PersistentDataContainer pdc = target.getPersistentDataContainer();
 
                                 boolean isMuted = false;
@@ -65,8 +68,6 @@ public class Silencer extends JavaPlugin implements Listener {
         saveResource("config.yml", false);
         saveDefaultConfig();
 
-        Bukkit.getLogger().info("Seems like we are ready to go!");
-
         getServer().getPluginManager().registerEvents(this, this);
 
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
@@ -78,9 +79,8 @@ public class Silencer extends JavaPlugin implements Listener {
     public void onPlayerChat(AsyncChatEvent ev) {
 
         PersistentDataContainer pdc = ev.getPlayer().getPersistentDataContainer();
-        NamespacedKey pKey = new NamespacedKey(this, "isMuted");
 
-        if (pdc.has(pKey, PersistentDataType.BOOLEAN) && pdc.get(pKey, PersistentDataType.BOOLEAN)) {
+        if (pdc.has(key, PersistentDataType.BOOLEAN) && pdc.get(key, PersistentDataType.BOOLEAN)) {
             ev.getPlayer().sendMessage(
                     MiniMessage.miniMessage().deserialize(getConfig().getString("messages.MUTE_OFFENDER_RESPONSE")));
             ev.setCancelled(true);
