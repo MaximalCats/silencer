@@ -1,7 +1,0 @@
-# Silencer configuration file.
-
-messages:
-  MUTE_CMD_RESPONSE: "<red>%p has been muted.</red>"
-  UNMUTE_CMD_RESPONSE: "<green>%p has been unmuted.</green>"
-  MUTE_OFFENDER_RESPONSE: "<red>You have been muted!</red>"
-

@@ -1,5 +1,0 @@
-name: Silencer
-version: '1.0'
-main: dev.hex.silencer.Silencer
-description: A simple mute plugin.
-api-version: '1.21.4'
