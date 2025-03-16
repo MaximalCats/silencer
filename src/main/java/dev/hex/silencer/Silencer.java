@@ -29,6 +29,7 @@ public class Silencer extends JavaPlugin implements Listener {
 
     private LiteralCommandNode<CommandSourceStack> muteCommand() {
         return Commands.literal("mute")
+                .requires(sender -> sender.getSender().hasPermission("silencer.mute"))
                 .then(Commands.argument("targets", ArgumentTypes.players())
                         .executes(ctx -> {
                             final PlayerSelectorArgumentResolver targetResolver = ctx.getArgument("targets",
